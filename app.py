@@ -1,5 +1,3 @@
-# %%writefile app.py
-
 import streamlit as st
 import pandas as pd
 import joblib
@@ -7,14 +5,22 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import io  # For capturing df.info()
 import os
+import gdown  # For downloading model from Google Drive
 
 # Set Streamlit page configuration
 st.set_page_config(page_title="Global Finance Prediction", layout="wide")
 
+# Google Drive file ID and direct download link
+file_id = "1A9Goerw4ejX8_8JnnDWq-NMrO2LC-OzU"
+file_path = "gs_random_forest.pkl"
+url = f"https://drive.google.com/uc?id={file_id}"
+
 # Load trained model
 @st.cache_resource
 def load_model():
-    file_path = os.path.join(os.path.dirname(__file__), "global_finance_database", "gs_random_forest.pkl")
+    if not os.path.exists(file_path):
+        st.write("Downloading model file from Google Drive...")
+        gdown.download(url, file_path, quiet=False)
     return joblib.load(file_path)  
 
 model = load_model()
@@ -29,7 +35,7 @@ st.write(
     https://www.worldbank.org/en/publication/gfdr/data/global-financial-development-database
     the dataset in the link contains data dictionary of the features.
     Email me at nosakhareasowata94@gmail.com for feedback/remarks 
-    as i will be updating my code from the feedbacks i get, thanks in anticipation😊.
+    as I will be updating my code from the feedbacks I get, thanks in anticipation😊.
     """
 )
 
@@ -41,7 +47,6 @@ st.markdown(f"[Download Sample Test File]({csv_url})")
 st.write("### Download Test File results (CSV Format) and compare with model predictions")
 csv_url = "https://docs.google.com/spreadsheets/d/1ZHtRcQeDEGguMpQMoPyyFR-2QwD1ZrnXIXXxgqPoaWI/export?format=csv"
 st.markdown(f"[Download Sample Test File]({csv_url})") 
-
 
 # Upload CSV file
 uploaded_file = st.file_uploader("Upload CSV for Prediction", type=["csv"])
@@ -66,7 +71,7 @@ if uploaded_file is not None:
         df["Income_Category"] = df["Predicted_Label"].apply(lambda x: "High Income" if x == 0 else "Low Income" if x == 1 else "Lower Middle Income" if x == 2 else "Upper Middle Income")
         
         st.write("### Predictions:")
-        st.dataframe(df[["Predicted_Label", "Income_Category"].head()])
+        st.dataframe(df[["Predicted_Label", "Income_Category"]].head())
         
         # Visualization
         st.write("### Predictions Distribution:")
