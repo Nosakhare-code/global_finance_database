@@ -1,3 +1,4 @@
+%%writefile app.py
 
 import streamlit as st
 import pandas as pd
@@ -5,6 +6,7 @@ import joblib
 import seaborn as sns
 import matplotlib.pyplot as plt
 import io  # For capturing df.info()
+import os
 
 # Set Streamlit page configuration
 st.set_page_config(page_title="Global Finance Prediction", layout="wide")
@@ -12,7 +14,8 @@ st.set_page_config(page_title="Global Finance Prediction", layout="wide")
 # Load trained model
 @st.cache_resource
 def load_model():
-    return joblib.load("gs_random_forest.pkl")  
+    file_path = os.path.join(os.path.dirname(__file__), "gs_random_forest.pkl")
+    return joblib.load(file_path)  
 
 model = load_model()
 
