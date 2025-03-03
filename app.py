@@ -14,7 +14,7 @@ st.set_page_config(page_title="Global Finance Prediction", layout="wide")
 # Load trained model
 @st.cache_resource
 def load_model():
-    file_path = os.path.join(os.path.dirname(__file__), "gs_random_forest.pkl")
+    file_path = os.path.join(os.path.dirname(__file__), "global_finance_database", "gs_random_forest.pkl")
     return joblib.load(file_path)  
 
 model = load_model()
