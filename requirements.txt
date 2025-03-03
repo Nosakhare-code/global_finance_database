@@ -1,3 +1,9 @@
+streamlit
+pandas
+numpy
+scikit-learn
+matplotlib
+joblib
 altair==5.5.0
 anaconda-anon-usage @ file:///C:/b/abs_c3w_h1zzjg/croot/anaconda-anon-usage_1710965204622/work
 archspec @ file:///croot/archspec_1709217642129/work
